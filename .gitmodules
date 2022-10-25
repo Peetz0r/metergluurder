@@ -1,0 +1,3 @@
+[submodule "kWh"]
+	path = arduino
+	url = https://github.com/Peetz0r/kWh.git
