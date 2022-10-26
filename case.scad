@@ -29,6 +29,9 @@ height_below_pcb = 4.0;
 height_above_pcb = 18.0;
 height_pcb_thickness = 1.6;
 
+cross_length = 10;
+cross_thickness = 3;
+remaining_thickness = 1.5;
 
 w = 1.6;
 
@@ -67,6 +70,27 @@ module case() {
             #cube([10, serial_length, serial_height]);
         }
     }
+
+
+    translate([pcb_offset_x + sensor_x, pcb_offset_y + sensor_y, -w-remaining_thickness]) {
+        difference() {
+            union() {
+                translate([-pcb_offset_x - sensor_x - w - cross_length, (sensor_width-w*3)/2, 0]) {
+                    difference() {
+                        cube([inner_length + w*2 + cross_length*2, w*3, remaining_thickness]);
+                        translate([w, w, 0]) cube([inner_length + cross_length*2, w, remaining_thickness]);
+                    }
+                }
+                translate([(sensor_length-w*3)/2,  -pcb_offset_y - sensor_y - w - cross_length, 0]) {
+                    difference() {
+                        cube([w*3, inner_width + w*2 + cross_length*2, remaining_thickness]);
+                        translate([w, w, 0]) cube([w, inner_width + cross_length*2, remaining_thickness]);
+                    }
+                }
+            }
+            cube([sensor_length, sensor_width, remaining_thickness]);
+        }
+    }
 }
 
 module lid() {
@@ -88,5 +112,5 @@ module lid() {
 }
 
 case();
-translate([0, -60, 0]) lid();
+translate([0, -60, -remaining_thickness - w/2]) lid();
 //lid();
